@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Démo Selenium - Dropdown local</title>
+</head>
+<body>
+  <h1>Choisir une catégorie</h1>
+
+  <label for="category">Catégorie :</label>
+  <select id="category">
+    <option value="">-- Choisir --</option>
+    <option value="books">Livres</option>
+    <option value="games">Jeux</option>
+    <option value="music">Musique</option>
+  </select>
+
+  <p id="info">Sélection actuelle : aucune</p>
+
+  <script>
+    const category = document.getElementById("category");
+    const info = document.getElementById("info");
+
+    category.addEventListener("change", function () {
+      const selectedText = category.options[category.selectedIndex].text;
+      const selectedValue = category.value;
+
+      if (selectedValue === "") {
+        info.textContent = "Sélection actuelle : aucune";
+      } else {
+        info.textContent = `Sélection actuelle : ${selectedText} (${selectedValue})`;
+      }
+    });
+  </script>
+</body>
+</html>
