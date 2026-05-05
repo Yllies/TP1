@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Démo Selenium - Checkboxes locales</title>
+</head>
+<body>
+  <h1>Préférences</h1>
+
+  <label>
+    <input type="checkbox" id="option-a" />
+    Recevoir la newsletter
+  </label>
+
+  <br /><br />
+
+  <label>
+    <input type="checkbox" id="option-b" checked />
+    Activer les notifications
+  </label>
+
+  <p id="status-a">Newsletter : non</p>
+  <p id="status-b">Notifications : oui</p>
+
+  <script>
+    const optionA = document.getElementById("option-a");
+    const optionB = document.getElementById("option-b");
+    const statusA = document.getElementById("status-a");
+    const statusB = document.getElementById("status-b");
+
+    function refreshStatus() {
+      statusA.textContent = optionA.checked ? "Newsletter : oui" : "Newsletter : non";
+      statusB.textContent = optionB.checked ? "Notifications : oui" : "Notifications : non";
+    }
+
+    optionA.addEventListener("change", refreshStatus);
+    optionB.addEventListener("change", refreshStatus);
+  </script>
+</body>
+</html>
