@@ -8,7 +8,7 @@
 1. Ouvrez le navigateur
 2. Accédez à https://practicesoftwaretesting.com/
 3. Attendez que les produits se chargent
-4. Localisez les cartes produit en utilisant le sélecteur CSS `.card`
+4. Localisez les cartes produit en utilisant le sélecteur CSS `a.card`
 5. Localisez les titres de produits en utilisant le sélecteur CSS `.card-title`
 6. Vérifiez que tous les éléments sont visibles
 7. Comptez le nombre total de cartes produit
