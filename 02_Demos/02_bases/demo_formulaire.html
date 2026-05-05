@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo Selenium Local 3</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 400px;
+        }
+
+        input, textarea, button {
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        #spacer {
+            height: 700px;
+        }
+
+        #output {
+            margin-top: 20px;
+            padding: 12px;
+            border: 1px solid #ccc;
+            display: none;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <h1>Démo formulaire Selenium</h1>
+
+    <form id="demo-form">
+        <input id="fullName" type="text" placeholder="Nom complet">
+        <input id="email" type="email" placeholder="Email">
+        <textarea id="address" placeholder="Adresse"></textarea>
+
+        <div id="spacer"></div>
+
+        <button id="submit" type="submit">Envoyer</button>
+    </form>
+
+    <div id="output"></div>
+
+    <script>
+        const form = document.getElementById("demo-form");
+        const output = document.getElementById("output");
+
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById("fullName").value;
+            const email = document.getElementById("email").value;
+            const address = document.getElementById("address").value;
+
+            output.textContent =
+                "Nom : " + fullName + "\n" +
+                "Email : " + email + "\n" +
+                "Adresse : " + address;
+
+            output.style.display = "block";
+        });
+    </script>
+</body>
+</html>
