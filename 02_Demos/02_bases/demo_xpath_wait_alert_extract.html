@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Démo Selenium - XPath, waits, alertes, extraction</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .catalog {
+      display: grid;
+      grid-template-columns: repeat(3, 240px);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      padding: 12px;
+    }
+
+    .card-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .card-text {
+      margin: 6px 0;
+    }
+
+    .text-price {
+      color: green;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #delayed-result {
+      margin-top: 12px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Boutique locale</h1>
+
+  <div class="catalog">
+    <article class="card" data-kind="tool">
+      <h2 class="card-title">Marteau</h2>
+      <img src="hammer.png" alt="product hammer image">
+      <p class="card-text text-price">$12.50</p>
+      <p class="card-text">Outil simple</p>
+      <div>
+        <button class="btn btn-primary">Ajouter</button>
+      </div>
+    </article>
+
+    <article class="card" data-kind="tool">
+      <h2 class="card-title">Tournevis</h2>
+      <img src="screwdriver.png" alt="product screwdriver image">
+      <p class="card-text text-price">$7.90</p>
+      <p class="card-text">Précision standard</p>
+      <div>
+        <button class="btn btn-primary">Ajouter</button>
+      </div>
+    </article>
+
+    <article class="card row" data-kind="music">
+      <h2 class="card-title">Radio</h2>
+      <img src="radio.png" alt="device image">
+      <p class="card-text text-price">$19.00</p>
+      <p class="card-text">Écoute portable</p>
+      <div>
+        <button class="btn btn-primary">Ajouter</button>
+      </div>
+    </article>
+  </div>
+
+  <button id="load-button">Charger le message</button>
+  <div id="delayed-result"></div>
+
+  <hr>
+
+  <button id="alert-button">Alerte simple</button>
+  <button id="confirm-button">Confirmation</button>
+  <button id="prompt-button">Prompt</button>
+
+  <p id="alert-result">Aucune action</p>
+
+  <script>
+    document.getElementById("load-button").addEventListener("click", function () {
+      const target = document.getElementById("delayed-result");
+      target.textContent = "";
+      setTimeout(function () {
+        target.textContent = "Contenu chargé";
+      }, 1200);
+    });
+
+    document.getElementById("alert-button").addEventListener("click", function () {
+      alert("Bonjour depuis l'alerte simple");
+      document.getElementById("alert-result").textContent = "Alerte acceptée";
+    });
+
+    document.getElementById("confirm-button").addEventListener("click", function () {
+      const confirmed = confirm("Voulez-vous continuer ?");
+      document.getElementById("alert-result").textContent =
+        confirmed ? "Confirmation acceptée" : "Confirmation refusée";
+    });
+
+    document.getElementById("prompt-button").addEventListener("click", function () {
+      const answer = prompt("Entrez un texte :", "");
+      if (answer === null) {
+        document.getElementById("alert-result").textContent = "Prompt annulée";
+      } else {
+        document.getElementById("alert-result").textContent = "Texte saisi : " + answer;
+      }
+    });
+  </script>
+</body>
+</html>

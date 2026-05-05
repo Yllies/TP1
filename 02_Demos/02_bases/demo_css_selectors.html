@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Démo Selenium - Sélecteurs CSS</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .catalog {
+      display: grid;
+      grid-template-columns: repeat(3, 220px);
+      gap: 16px;
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      padding: 12px;
+    }
+
+    .card-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .card-text {
+      margin: 6px 0;
+    }
+
+    .text-price {
+      color: green;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Catalogue local</h1>
+
+  <div class="catalog">
+    <article class="card">
+      <h2 class="card-title">Marteau</h2>
+      <p class="card-text text-price">$12.50</p>
+      <p class="card-text">Outil simple</p>
+      <button class="btn">Ajouter</button>
+    </article>
+
+    <article class="card">
+      <h2 class="card-title">Tournevis</h2>
+      <p class="card-text text-price">$7.90</p>
+      <p class="card-text">Précision standard</p>
+      <button class="btn">Ajouter</button>
+    </article>
+
+    <article class="card">
+      <h2 class="card-title">Scie</h2>
+      <p class="card-text text-price">$19.00</p>
+      <p class="card-text">Découpe bois</p>
+      <button class="btn hidden">Ajouter</button>
+    </article>
+  </div>
+</body>
+</html>
