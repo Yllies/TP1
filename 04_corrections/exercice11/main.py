@@ -1,6 +1,6 @@
 from selenium import webdriver
 from booksPage import BooksPage
-from report import generate_report
+from report import generate_report,generate_report_pretty,generate_report_texte
 
 def main():
     driver = webdriver.Chrome()
@@ -25,7 +25,9 @@ def main():
         for book in books:
             print(f"Livre {book['id']}: {book['title']} - £{book['price']:.2f} ({book['rating']})")
 
-        generate_report(books)
+        #generate_report(books)
+        #generate_report_pretty(books)
+        generate_report_texte(books)
 
     except Exception as e:
         print(f"\nErreur: {e}")

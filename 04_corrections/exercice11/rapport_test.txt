@@ -1,0 +1,29 @@
+Date et heure du test : 06/05/2026 15:16:30
+
+--- Phase 3: Rapport et Statistiques ---
+
+Nombre total de livres: 20
+
+5 Premiers Livres:
+  1. A Light in the ...
+     Prix: £51.77 | Rating: Three | In stock
+  2. Tipping the Velvet
+     Prix: £53.74 | Rating: One | In stock
+  3. Soumission
+     Prix: £50.10 | Rating: One | In stock
+  4. Sharp Objects
+     Prix: £47.82 | Rating: Four | In stock
+  5. Sapiens: A Brief History ...
+     Prix: £54.23 | Rating: Five | In stock
+
+Statistiques de Prix:
+  Prix moyen: £38.05
+  Prix minimum: £13.99
+  Prix maximum: £57.25
+
+Distribution par Note:
+  Five étoiles: 4 livres
+  Four étoiles: 4 livres
+  One étoiles: 6 livres
+  Three étoiles: 3 livres
+  Two étoiles: 3 livres
