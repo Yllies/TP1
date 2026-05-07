@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SPA Test Site — TechShop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0d0f;
+      --surface: #16161a;
+      --surface2: #1e1e24;
+      --border: #2a2a35;
+      --accent: #7c6ef7;
+      --accent2: #f7a06e;
+      --text: #e8e8f0;
+      --muted: #7a7a90;
+      --success: #5ecfa0;
+      --danger: #f76e6e;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.5px;
+    }
+    header h1 span { color: var(--accent); }
+
+    /* ── LAYOUT ── */
+    .app-container {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 65px);
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 28px 20px;
+    }
+
+    .sidebar h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .filter-option {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--muted);
+      transition: all 0.15s;
+      margin-bottom: 4px;
+      user-select: none;
+    }
+    .filter-option:hover { background: var(--surface2); color: var(--text); }
+    .filter-option.active {
+      background: rgba(124,110,247,0.15);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ── MAIN ── */
+    .main-content { padding: 28px 36px; }
+
+    /* Search bar */
+    .search-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      align-items: center;
+    }
+
+    #search-input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 18px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    #search-input:focus { border-color: var(--accent); }
+    #search-input::placeholder { color: var(--muted); }
+
+    #sort-dropdown {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+    }
+    #sort-dropdown option { background: var(--surface2); }
+
+    /* Stats bar */
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .stats-bar strong { color: var(--text); }
+
+    /* Loading */
+    #loading-indicator {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      font-size: 0.85rem;
+    }
+    #loading-indicator.visible { display: flex; }
+
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── RESULTS GRID ── */
+    #results-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .search-result {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+      animation: fadeIn 0.3s ease both;
+    }
+    .search-result:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(124,110,247,0.15);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-img {
+      width: 100%;
+      aspect-ratio: 1;
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .result-body { padding: 14px; }
+
+    .result-title {
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .result-price {
+      color: var(--accent2);
+      font-weight: 600;
+      font-size: 1rem;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .result-category {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── DETAIL PANEL ── */
+    .item-detail {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .item-detail.open { display: flex; }
+
+    .detail-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 540px;
+      padding: 36px;
+      position: relative;
+      animation: slideUp 0.25s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .detail-close {
+      position: absolute;
+      top: 16px; right: 18px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: color 0.15s;
+    }
+    .detail-close:hover { color: var(--text); }
+
+    .detail-emoji { font-size: 3.5rem; margin-bottom: 16px; }
+
+    .detail-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .detail-price {
+      color: var(--accent2);
+      font-size: 1.6rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .detail-description {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .detail-rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface2);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+
+    #favorite-btn {
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 13px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    #favorite-btn:hover { opacity: 0.9; transform: scale(1.01); }
+    #favorite-btn:active { transform: scale(0.99); }
+
+    /* ── FAVORITE NOTIFICATION ── */
+    .favorite-notification {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--success);
+      color: #0d0d0f;
+      border-radius: 10px;
+      padding: 12px 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      z-index: 400;
+      animation: notifIn 0.3s ease;
+    }
+    .favorite-notification.visible { display: block; }
+    @keyframes notifIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MODAL (générique) ── */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(0,0,0,0.6);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.open { display: flex; }
+
+    .modal-inner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    .modal-inner h2 { font-family: 'Syne', sans-serif; margin-bottom: 10px; }
+    .modal-inner p { color: var(--muted); margin-bottom: 24px; font-size: 0.9rem; }
+
+    .modal-actions { display: flex; gap: 12px; justify-content: center; }
+
+    .modal-close, .modal-confirm {
+      padding: 10px 22px;
+      border-radius: 8px;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: opacity 0.15s;
+    }
+    .modal-close { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .modal-confirm { background: var(--accent); color: white; }
+    .modal-close:hover, .modal-confirm:hover { opacity: 0.85; }
+
+    /* ── LOAD MORE ── */
+    .load-more-zone {
+      text-align: center;
+      padding: 32px 0 16px;
+    }
+    .item-card { display: none; } /* sélecteur utilisé par le Python */
+
+    /* Empty state */
+    .empty-state {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+    .empty-state .icon { font-size: 3rem; margin-bottom: 12px; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <h1>Tech<span>Shop</span> <small style="font-size:0.6rem;color:var(--muted);font-family:'DM Sans',sans-serif">SPA Demo</small></h1>
+  <span style="font-size:0.8rem;color:var(--muted)">Selenium Test Target</span>
+</header>
+
+<div class="app-container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h3>Catégories</h3>
+    <div class="filter-option active" onclick="filterCategory('All')">Tout</div>
+    <div class="filter-option" onclick="filterCategory('Electronics')">Electronics</div>
+    <div class="filter-option" onclick="filterCategory('Audio')">Audio</div>
+    <div class="filter-option" onclick="filterCategory('Gaming')">Gaming</div>
+    <div class="filter-option" onclick="filterCategory('Photo')">Photo</div>
+    <div class="filter-option" onclick="filterCategory('Mobile')">Mobile</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+
+    <!-- Search + Sort -->
+    <div class="search-bar">
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Rechercher un produit..."
+        oninput="handleSearch(this.value)"
+        autocomplete="off"
+      />
+      <select id="sort-dropdown" onchange="handleSort(this.value)">
+        <option value="default">Trier par…</option>
+        <option value="price-asc">Prix croissant</option>
+        <option value="price-desc">Prix décroissant</option>
+        <option value="name-asc">Nom A→Z</option>
+        <option value="rating-desc">Meilleures notes</option>
+      </select>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <span><strong id="result-count">0</strong> résultats</span>
+      <span id="loading-indicator">
+        <span class="spinner"></span> Chargement…
+      </span>
+    </div>
+
+    <!-- Results grid -->
+    <div id="results-container"></div>
+
+    <!-- Load more (infinite scroll trigger) -->
+    <div class="load-more-zone" id="load-more-zone" style="display:none">
+      <button onclick="loadMore()" style="
+        background:var(--surface2);border:1px solid var(--border);
+        color:var(--muted);border-radius:8px;padding:10px 24px;
+        cursor:pointer;font-family:'DM Sans',sans-serif;">
+        Charger plus…
+      </button>
+    </div>
+
+  </main>
+</div>
+
+<!-- ITEM DETAIL PANEL -->
+<div class="item-detail" id="item-detail-panel">
+  <div class="detail-card">
+    <button class="detail-close" onclick="closeDetail()">✕</button>
+    <div class="detail-emoji" id="detail-emoji"></div>
+    <div class="detail-title" id="detail-title"></div>
+    <div class="detail-price" id="detail-price"></div>
+    <div class="detail-description" id="detail-description"></div>
+    <div class="detail-rating" id="detail-rating"></div>
+    <button id="favorite-btn" onclick="addToFavorites()">♥ Ajouter aux favoris</button>
+  </div>
+</div>
+
+<!-- FAVORITE NOTIFICATION -->
+<div class="favorite-notification" id="favorite-notification">✓ Ajouté aux favoris !</div>
+
+<!-- MODAL générique -->
+<div class="modal" id="generic-modal">
+  <div class="modal-inner">
+    <h2>Confirmation</h2>
+    <p>Voulez-vous continuer cette action ?</p>
+    <div class="modal-actions">
+      <button class="modal-close" onclick="closeModal()">Annuler</button>
+      <button class="modal-confirm" onclick="confirmModal()">Confirmer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─────────────────────────────────────────
+  //  DATA
+  // ─────────────────────────────────────────
+  const ALL_PRODUCTS = [
+    { id:1,  title:"Laptop Pro 15\"",        price:1299, category:"Electronics", rating:"⭐ 4.8",  emoji:"💻", description:"Processeur i9, 32 Go RAM, SSD 1 To. Idéal pour les professionnels exigeants." },
+    { id:2,  title:"Laptop Air 13\"",         price:899,  category:"Electronics", rating:"⭐ 4.6",  emoji:"💻", description:"Ultra-léger 1.2 kg, autonomie 18h. Le compagnon de voyage parfait." },
+    { id:3,  title:"Laptop Gaming RGB",       price:1599, category:"Gaming",      rating:"⭐ 4.9",  emoji:"🎮", description:"RTX 4070, 144 Hz, refroidissement avancé. Pour les gamers sérieux." },
+    { id:4,  title:"Casque Sans Fil Pro",     price:349,  category:"Audio",       rating:"⭐ 4.7",  emoji:"🎧", description:"ANC actif, 30h de batterie, son Hi-Res certifié." },
+    { id:5,  title:"Écouteurs TWS",           price:129,  category:"Audio",       rating:"⭐ 4.4",  emoji:"🎵", description:"True Wireless, IP54, latence 40ms pour le gaming." },
+    { id:6,  title:"Smartphone Ultra",        price:1199, category:"Mobile",      rating:"⭐ 4.8",  emoji:"📱", description:"Écran AMOLED 6.7\", triple capteur 200 MP, charge 100W." },
+    { id:7,  title:"Smartphone Lite",         price:399,  category:"Mobile",      rating:"⭐ 4.2",  emoji:"📱", description:"Batterie 5000 mAh, bon rapport qualité/prix pour l'essentiel." },
+    { id:8,  title:"Appareil Photo Mirrorless", price:1899, category:"Photo",     rating:"⭐ 4.9",  emoji:"📷", description:"Capteur plein format 61 MP, vidéo 8K, stabilisation 5 axes." },
+    { id:9,  title:"Webcam 4K Studio",        price:199,  category:"Electronics", rating:"⭐ 4.5",  emoji:"📹", description:"4K 30fps, mise au point automatique, idéale pour le streaming." },
+    { id:10, title:"Manette Pro Controller",  price:79,   category:"Gaming",      rating:"⭐ 4.6",  emoji:"🕹️", description:"Hall effect sticks, 40h batterie, compatible PC/console." },
+    { id:11, title:"Enceinte Bluetooth XL",   price:249,  category:"Audio",       rating:"⭐ 4.7",  emoji:"🔊", description:"360°, étanche IPX7, 24h d'autonomie, basse profonde." },
+    { id:12, title:"Tablette Pro 12\"",       price:799,  category:"Electronics", rating:"⭐ 4.7",  emoji:"📟", description:"Puce M2, 256 Go, compatible stylet. Créativité sans limite." },
+  ];
+
+  let currentProducts = [...ALL_PRODUCTS];
+  let currentCategory = 'All';
+  let currentSearch   = '';
+  let currentSort     = 'default';
+  let displayedCount  = 8;
+  let selectedProduct = null;
+
+  // ─────────────────────────────────────────
+  //  RENDER
+  // ─────────────────────────────────────────
+  function renderProducts() {
+    const container = document.getElementById('results-container');
+    container.innerHTML = '';
+
+    const visible = currentProducts.slice(0, displayedCount);
+
+    if (visible.length === 0) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="icon">🔍</div>
+          <div>Aucun résultat pour "<strong>${currentSearch}</strong>"</div>
+        </div>`;
+      document.getElementById('load-more-zone').style.display = 'none';
+    } else {
+      visible.forEach((p, i) => {
+        const div = document.createElement('div');
+        // Classes IMPORTANTES pour le script Python
+        div.className = 'search-result item-card';
+        div.setAttribute('data-id', p.id);
+        // Pas d'animation-delay : les textes doivent être lisibles immédiatement
+        div.innerHTML = `
+          <div class="result-img">${p.emoji}</div>
+          <div class="result-body">
+            <div class="result-title item-title">${p.title}</div>
+            <div class="result-price">${p.price} €</div>
+            <div class="result-category">${p.category}</div>
+          </div>`;
+        div.addEventListener('click', () => openDetail(p));
+        container.appendChild(div);
+      });
+
+      document.getElementById('load-more-zone').style.display =
+        currentProducts.length > displayedCount ? 'block' : 'none';
+    }
+
+    document.getElementById('result-count').textContent = currentProducts.length;
+    // Marqueur de rendu : permet à Selenium de détecter chaque re-render
+    // même si le nombre de résultats ne change pas
+    container.setAttribute('data-render-id', Date.now());
+  }
+
+  // ─────────────────────────────────────────
+  //  SEARCH (simule un appel AJAX)
+  // ─────────────────────────────────────────
+  let searchTimeout;
+  function handleSearch(value) {
+    currentSearch = value.toLowerCase().trim();
+    displayedCount = 8;
+    showLoading();
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      applyFilters();
+      hideLoading();
+    }, 400);
+  }
+
+  // ─────────────────────────────────────────
+  //  FILTER CATEGORY
+  // ─────────────────────────────────────────
+  function filterCategory(cat) {
+    currentCategory = cat;
+    displayedCount  = 8;
+
+    document.querySelectorAll('.filter-option').forEach(el => {
+      el.classList.toggle('active', el.textContent.trim() === (cat === 'All' ? 'Tout' : cat));
+    });
+
+    showLoading();
+    setTimeout(() => {
+      applyFilters();
+      hideLoading();
+    }, 300);
+  }
+
+  // ─────────────────────────────────────────
+  //  SORT
+  // ─────────────────────────────────────────
+  function handleSort(value) {
+    currentSort = value;
+    showLoading();
+    setTimeout(() => {
+      applyFilters();
+      hideLoading();
+    }, 250);
+  }
+
+  // ─────────────────────────────────────────
+  //  APPLY ALL FILTERS + SORT
+  // ─────────────────────────────────────────
+  function applyFilters() {
+    let products = [...ALL_PRODUCTS];
+
+    if (currentCategory !== 'All') {
+      products = products.filter(p => p.category === currentCategory);
+    }
+    if (currentSearch) {
+      products = products.filter(p =>
+        p.title.toLowerCase().includes(currentSearch) ||
+        p.category.toLowerCase().includes(currentSearch)
+      );
+    }
+
+    switch (currentSort) {
+      case 'price-asc':   products.sort((a,b) => a.price - b.price); break;
+      case 'price-desc':  products.sort((a,b) => b.price - a.price); break;
+      case 'name-asc':    products.sort((a,b) => a.title.localeCompare(b.title)); break;
+      case 'rating-desc': products.sort((a,b) => b.rating.localeCompare(a.rating)); break;
+    }
+
+    currentProducts = products;
+    renderProducts();
+  }
+
+  // ─────────────────────────────────────────
+  //  DETAIL PANEL
+  // ─────────────────────────────────────────
+  function openDetail(product) {
+    selectedProduct = product;
+    document.getElementById('detail-emoji').textContent        = product.emoji;
+    document.getElementById('detail-title').textContent        = product.title;
+    document.getElementById('detail-price').textContent        = product.price + ' €';
+    document.getElementById('detail-description').textContent  = product.description;
+    document.getElementById('detail-rating').textContent       = product.rating + ' (124 avis)';
+    const panel = document.getElementById('item-detail-panel');
+    panel.classList.add('open');
+    panel.setAttribute('data-product-id', product.id);
+  }
+
+  // Fonction appelable depuis Selenium via JS pour ouvrir un produit par index
+  function openDetailByIndex(index) {
+    const items = document.querySelectorAll('.item-card');
+    if (items[index]) {
+      const productId = parseInt(items[index].getAttribute('data-id'));
+      const product = ALL_PRODUCTS.find(p => p.id === productId);
+      if (product) openDetail(product);
+    }
+  }
+
+  function closeDetail() {
+    document.getElementById('item-detail-panel').classList.remove('open');
+  }
+
+  // ─────────────────────────────────────────
+  //  FAVORITES
+  // ─────────────────────────────────────────
+  function addToFavorites() {
+    closeDetail();
+    const notif = document.getElementById('favorite-notification');
+    notif.classList.add('visible');
+    setTimeout(() => notif.classList.remove('visible'), 2500);
+  }
+
+  // ─────────────────────────────────────────
+  //  LOAD MORE (infinite scroll simulation)
+  // ─────────────────────────────────────────
+  function loadMore() {
+    displayedCount += 4;
+    renderProducts();
+  }
+
+  // Vrai scroll listener pour le script Python
+  window.addEventListener('scroll', () => {
+    const nearBottom =
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
+    if (nearBottom && currentProducts.length > displayedCount) {
+      loadMore();
+    }
+  });
+
+  // ─────────────────────────────────────────
+  //  MODAL
+  // ─────────────────────────────────────────
+  function openModal()   { document.getElementById('generic-modal').classList.add('open'); }
+  function closeModal()  { document.getElementById('generic-modal').classList.remove('open'); }
+  function confirmModal(){ closeModal(); }
+
+  // ─────────────────────────────────────────
+  //  LOADING
+  // ─────────────────────────────────────────
+  function showLoading() { document.getElementById('loading-indicator').classList.add('visible'); }
+  function hideLoading() { document.getElementById('loading-indicator').classList.remove('visible'); }
+
+  // ─────────────────────────────────────────
+  //  INIT
+  // ─────────────────────────────────────────
+  applyFilters();
+</script>
+</body>
+</html>
