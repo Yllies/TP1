@@ -1,6 +1,6 @@
 from selenium import webdriver
-from searchPage import SearchPage
-from report import generate_report
+from pages import SearchPage
+from utils import generate_report
 
 driver = webdriver.Chrome()
 page = SearchPage(driver)
@@ -21,6 +21,7 @@ try:
     print("Les éléments sont visibles")
 
     print("\n--- Phase 2: Recherche de 'hammer' ---")
+    page.search_products("hammer")
     page.search_products("hammer")
     print("'hammer' saisi dans le champ")
     print("Bouton soumis")
