@@ -358,7 +358,7 @@ class SPAAutomation:
 
 
 def main():
-    automation = SPAAutomation(headless=False)
+    automation = SPAAutomation(headless=True)
 
     try:
         result = automation.complete_spa_flow()
