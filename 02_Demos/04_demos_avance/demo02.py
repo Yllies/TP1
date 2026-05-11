@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 
 import os
 import logging
@@ -19,31 +19,25 @@ logger = logging.getLogger(__name__)
 class SPAAutomation:
 
     def __init__(self, headless=False):
-        logger.info("Initializing Chrome driver for SPA...")
+        logger.info("Initializing Firefox driver for SPA...")
 
         options = Options()
         # Ouvre le navigateur en plein écran ou presque, selon le système
-        #options.add_argument("--start-maximized")
-        # Désactive les demandes de notification des sites web
-        options.add_argument("--disable-notifications")
+        options.add_argument("--start-maximized")
         # Désactive certains popups du navigateur
         options.add_argument("--disable-popup-blocking")
-        options.add_argument("--window-size=1920,1080")
+        options.add_argument("--width=1920")
+        options.add_argument("--height=1080")
         if headless:
             options.add_argument("--headless")
 
-        # Préférences internes de Chrome
-        # Elles permettent notamment d'éviter des alertes liées aux mots de passe
-        prefs = {
-            "profile.password_manager_leak_detection": False,
-            "credentials_enable_service": False,
-            "profile.password_manager_enabled": False
-        }
-        # Ajoute les préférences Chrome à la configuration du navigateur
-        options.add_experimental_option("prefs", prefs)
+        # Préférences internes de Firefox
+        options.set_preference("dom.disable_beforeunload", True)
+        options.set_preference("browser.startup.homepage_override.mstone", "ignore")
+        options.set_preference("startup.homepage_welcome_url", "")
 
-        self.driver = webdriver.Chrome(options=options)
-        self.wait = WebDriverWait(self.driver,10)
+        self.driver = webdriver.Firefox(options=options)
+        self.wait = WebDriverWait(self.driver, 10)
 
     def close(self):
         logger.info("Closing driver...")

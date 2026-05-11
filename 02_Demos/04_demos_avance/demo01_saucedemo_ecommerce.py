@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.chrome.options import Options
 import time
 
 
@@ -9,7 +10,6 @@ def demo_saucedemo_login():
     print("\n" + "="*60)
     print("DEMO: SAUCE DEMO LOGIN")
     print("="*60)
-
     driver = webdriver.Chrome()
 
     try:

@@ -1,0 +1,14 @@
+==================================================
+RAPPORT DE RECHERCHE : screwdriver
+==================================================
+Nombre total de résultats trouvés : 2
+
+Top 3 des produits :
+ - Phillips Screwdriver ($4.92)
+ - Mini Screwdriver ($13.96)
+
+Statistiques de prix :
+ - Prix minimum : $4.92 (Phillips Screwdriver)
+ - Prix maximum : $13.96 (Mini Screwdriver)
+ - Prix moyen   : 9.44
+==================================================
