@@ -1,0 +1,24 @@
+========================================
+=== RAPPORT TP4 ===
+Généré le : 12/05/2026 12:27:36
+========================================
+
+Produits trouvés : 14
+
+- Blue Top | Rs. 500
+- Winter Top | Rs. 600
+- Summer White Top | Rs. 400
+- Madame Top For Women | Rs. 1000
+- Fancy Green Top | Rs. 700
+- Sleeves Printed Top - White | Rs. 499
+- Half Sleeves Top Schiffli Detailing - Pink | Rs. 359
+- Frozen Tops For Kids | Rs. 278
+- Full Sleeves Top Cherry - Pink | Rs. 679
+- Printed Off Shoulder Top - White | Rs. 315
+- Sleeves Top and Short - Blue & Pink | Rs. 478
+- Little Girls Mr. Panda Shirt | Rs. 1200
+- Colour Blocked Shirt – Sky Blue | Rs. 849
+- Lace Top For Women | Rs. 1400
+
+TEST TERMINÉ AVEC SUCCÈS
+========================================
